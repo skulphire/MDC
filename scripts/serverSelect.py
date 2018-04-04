@@ -27,7 +27,7 @@ class serverHandle(object):
             for s in readable:
                 if s is self.server:
                     connection, client = s.accept()
-                    print("Connected to: ", client)
+                    print("   Connected to: ", client)
                     connection.setblocking(0)
                     self.inputs.append(connection)
                     self.dataQueue[connection] = queue.Queue()
@@ -37,12 +37,12 @@ class serverHandle(object):
                     except ConnectionResetError:
                         continue
                     if data:
-                        print("%s: %s" % (s.getpeername(),self.convertToString(data)))
+                        print("   %s: %s" % (s.getpeername(),self.convertToString(data)))
                         self.dataQueue[s].put(data)
                         if s not in self.outputs:
                             self.outputs.append(s)
                     else:
-                        print("Closing client with no data: ",client)
+                        print("   Closing client with no data: ",client)
                         if s in self.outputs:
                             self.outputs.remove(s)
                         self.inputs.remove(s)
@@ -53,19 +53,20 @@ class serverHandle(object):
                 try:
                     nextMsg = self.dataQueue[s].get_nowait()
                 except queue.Empty:
-                    #print("Output queue Is empty for: ",s.getpeername())
+                    #print("   Output queue Is empty for: ",s.getpeername())
                     self.outputs.remove(s)
                 else:
-                    print("Sending: %s to %s" % (nextMsg,s.getpeername()))
+                    print("   Sending: %s to %s" % (self.convertToString(nextMsg),s.getpeername()))
                     s.send(nextMsg)
 
             for s in e:
-                print("Handling exception for: ",s.getpeername())
+                print("   Handling exception for: ",s.getpeername())
                 self.inputs.remove(s)
                 if s in self.outputs:
                     self.outputs.remove(s)
                 s.close()
                 del self.dataQueue[s]
+
     def convertToString(self,bite):
         str = bite.decode("utf-8")
         return str
