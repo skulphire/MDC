@@ -6,10 +6,11 @@ class SocketHandle(object):
         # 184 is desktop
         # 69 is laptop
         self.s = socket(AF_INET,  SOCK_STREAM)
+        self.server = socket(AF_INET, SOCK_STREAM)
 
     def clientConnect(self):
         try:
-            self.s.connect(("ec2-35-174-156-19.compute-1.amazonaws.com", 9130))
+            self.s.connect(("35.172.19.17", 9130))
             print("connected")
             return True
         except Exception:
@@ -33,15 +34,15 @@ class SocketHandle(object):
             #self.s.close()
 
     def createServer(self):
-        server = socket(AF_INET, SOCK_STREAM)
-        server.bind(('',9130))
-        print("port:",server.getsockname())
+        self.server = socket(AF_INET, SOCK_STREAM)
+        self.server.bind(("172.31.82.100",9130))
+        print("port:",self.server.getsockname())
 
         while True:
-            server.listen(1)
+            self.server.listen(1)
             print("Listening")
             try:
-                connection, addr = server.accept()
+                connection, addr = self.server.accept()
                 print("Connected by: ", addr)
             except:
                 continue
@@ -59,7 +60,8 @@ class SocketHandle(object):
                     connection.close()
                     break
 
-
+    def closeServer(self):
+        self.server.close()
     def convertToBytes(self,str):
         byteStr = bytes(str,'utf-8')
         return byteStr
