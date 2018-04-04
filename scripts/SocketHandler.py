@@ -34,7 +34,7 @@ class SocketHandle(object):
 
     def createServer(self):
         server = socket(AF_INET, SOCK_STREAM)
-        server.bind(("172.31.82.100",8000))
+        server.bind(("172.31.82.100",443))
 
 
         while True:
