@@ -49,7 +49,7 @@ class serverHandle(object):
                 try:
                     nextMsg = self.dataQueue[s].get_nowait()
                 except queue.Empty:
-                    print("Output queue for: "+s.getpeername()+" Is empty")
+                    print("Output queue Is empty for: ",s.getpeername())
                     self.outputs.remove(s)
                 else:
                     print("Sending: %s to %s" % (nextMsg,s.getpeername()))
