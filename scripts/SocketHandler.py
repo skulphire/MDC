@@ -9,7 +9,7 @@ class SocketHandle(object):
 
     def clientConnect(self):
         try:
-            self.s.connect(("35.174.156.19", 443))
+            self.s.connect(("35.174.156.19", 9130))
             print("connected")
             return True
         except Exception:
@@ -34,8 +34,8 @@ class SocketHandle(object):
 
     def createServer(self):
         server = socket(AF_INET, SOCK_STREAM)
-        server.bind(("172.31.82.100",443))
-
+        server.bind(("35.174.156.19",9130))
+        print("port:",server.getsockname())
 
         while True:
             server.listen(1)
