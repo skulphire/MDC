@@ -8,7 +8,7 @@ class SocketHandle(object):
         self.s = socket(AF_INET,  SOCK_STREAM)
         self.server = socket(AF_INET, SOCK_STREAM)
         #to reuse socket fast
-        self.server.setsockopt(SOL_SOCKET,SO_REUSEADDR,1)
+        #self.server.setsockopt(SOL_SOCKET,SO_REUSEADDR,1)
 
     def clientConnect(self):
         try:
