@@ -36,7 +36,6 @@ class SocketHandle(object):
             #self.s.close()
 
     def createServer(self):
-        self.server = socket(AF_INET, SOCK_STREAM)
         test = True
         while test:
             try:
