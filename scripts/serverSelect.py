@@ -7,6 +7,7 @@ class serverHandle(object):
         self.dataQueue = {}
         self.outputs = []
         self.server = socket(AF_INET, SOCK_STREAM)
+        self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.server.setblocking(0)
         try:
             self.server.bind((addr, port))
