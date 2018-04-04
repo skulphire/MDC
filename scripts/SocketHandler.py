@@ -2,16 +2,19 @@ from socket import *
 
 class SocketHandle(object):
     def __init__(self):
-        # server: "107.180.44.223"
+        # server: "35.174.156.19"
         # 184 is desktop
+        # 69 is laptop
         self.s = socket(AF_INET,  SOCK_STREAM)
 
     def clientConnect(self):
         try:
-            self.s.connect(("192.168.1.69", 8889))
+            self.s.connect(("35.174.156.19", 443))
             print("connected")
+            return True
         except Exception:
             print("Could not connect")
+            return False
 
     def clientSendRecv(self, message):
         self.s.send(self.convertToBytes(message))
@@ -26,12 +29,12 @@ class SocketHandle(object):
             print("Done")
             self.s.close()
         else:
-            print("<")
+            print("##############")
             #self.s.close()
 
     def createServer(self):
         server = socket(AF_INET, SOCK_STREAM)
-        server.bind(("192.168.1.69",8889))
+        server.bind(("35.174.156.19",443))
 
 
         while True:
