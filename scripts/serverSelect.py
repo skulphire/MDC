@@ -37,7 +37,7 @@ class serverHandle(object):
                     except ConnectionResetError:
                         continue
                     if data:
-                        print("%s: %s" % (s.getpeername(),data))
+                        print("%s: %s" % (s.getpeername(),self.convertToString(data)))
                         self.dataQueue[s].put(data)
                         if s not in self.outputs:
                             self.outputs.append(s)
@@ -53,7 +53,7 @@ class serverHandle(object):
                 try:
                     nextMsg = self.dataQueue[s].get_nowait()
                 except queue.Empty:
-                    print("Output queue Is empty for: ",s.getpeername())
+                    #print("Output queue Is empty for: ",s.getpeername())
                     self.outputs.remove(s)
                 else:
                     print("Sending: %s to %s" % (nextMsg,s.getpeername()))
@@ -66,3 +66,6 @@ class serverHandle(object):
                     self.outputs.remove(s)
                 s.close()
                 del self.dataQueue[s]
+    def convertToString(self,bite):
+        str = bite.decode("utf-8")
+        return str
