@@ -34,7 +34,7 @@ class SocketHandle(object):
 
     def createServer(self):
         server = socket(AF_INET, SOCK_STREAM)
-        server.bind(("35.174.156.19",9130))
+        server.bind(("172.31.82.100",9130))
         print("port:",server.getsockname())
 
         while True:
