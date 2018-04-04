@@ -37,7 +37,7 @@ class serverHandle(object):
                     except ConnectionResetError:
                         continue
                     if data:
-                        print("   %s: %s" % (s.getpeername(),self.convertToString(data)))
+                        print("   %s: (%s)" % (s.getpeername(),self.convertToString(data)))
                         self.dataQueue[s].put(data)
                         if s not in self.outputs:
                             self.outputs.append(s)
@@ -56,7 +56,7 @@ class serverHandle(object):
                     #print("   Output queue Is empty for: ",s.getpeername())
                     self.outputs.remove(s)
                 else:
-                    print("   Sending: %s to %s" % (self.convertToString(nextMsg),s.getpeername()))
+                    print("   Sending: (%s) to %s" % (self.convertToString(nextMsg),s.getpeername()))
                     s.send(nextMsg)
 
             for s in e:
