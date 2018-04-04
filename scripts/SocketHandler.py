@@ -2,11 +2,13 @@ from socket import *
 
 class SocketHandle(object):
     def __init__(self):
-        # server: "35.174.156.19"
+        # server: "35.172.19.17"
         # 184 is desktop
         # 69 is laptop
         self.s = socket(AF_INET,  SOCK_STREAM)
         self.server = socket(AF_INET, SOCK_STREAM)
+        #to reuse socket fast
+        self.server.setsockopt(SOL_SOCKET,SO_REUSEADDR,1)
 
     def clientConnect(self):
         try:
