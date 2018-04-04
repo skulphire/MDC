@@ -32,7 +32,10 @@ class serverHandle(object):
                     self.inputs.append(connection)
                     self.dataQueue[connection] = queue.Queue()
                 else:
-                    data = s.recv(1024)
+                    try:
+                        data = s.recv(1024)
+                    except ConnectionResetError:
+                        continue
                     if data:
                         print("%s: %s" % (s.getpeername(),data))
                         self.dataQueue[s].put(data)
