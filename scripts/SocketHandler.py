@@ -41,6 +41,7 @@ class SocketHandle(object):
             try:
                 self.server.bind(("172.31.82.100",9130))
                 test = False
+            #does not work
             except:
                 self.server.bind(("172.31.82.100",8888))
 

@@ -9,7 +9,7 @@ BUFSIZ = 1024
 class ChatServer(object):
     """ Simple chat server using select """
 
-    def __init__(self, port=3490, backlog=5):
+    def __init__(self, port=9130, backlog=5):
         self.clients = 0
         # Client map
         self.clientmap = {}
@@ -17,7 +17,7 @@ class ChatServer(object):
         self.outputs = []
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         #self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.server.bind(("192.168.1.184", port))
+        self.server.bind(("172.31.82.100", port))
         print("Listening to port", port, "...")
         self.server.listen(backlog)
         # Trap keyboard interrupts

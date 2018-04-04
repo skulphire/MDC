@@ -1,3 +1,4 @@
-from scripts import test
+from scripts import serverSelect
 if __name__ == '__main__':
-    test.ChatServer(8889).serve()
+    server = serverSelect.serverHandle()
+    server.start()
