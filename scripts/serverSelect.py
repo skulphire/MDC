@@ -22,7 +22,7 @@ class serverHandle(object):
 
     def start(self):
         while self.inputs:
-            print("Awaiting event >")
+            print(">>>")
             readable, writable, e = select.select(self.inputs,self.outputs,self.inputs)
             for s in readable:
                 if s is self.server:
