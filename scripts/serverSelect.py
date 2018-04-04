@@ -16,7 +16,7 @@ class serverHandle(object):
             print("Listening...")
             self.server.listen(1)
         except Exception:
-            print("Could not bind, restart server or find a better way!")
+            print("Could not bind, restart server or kill process!")
             exit(0)
 
 
