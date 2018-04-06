@@ -39,8 +39,8 @@ class serverHandle(object):
             exit(0)
 
     def start(self):
+        print(">>>")
         while self.inputs:
-            print(">>>")
             readable, writable, e = select.select(self.inputs,self.outputs,self.inputs)
             for s in readable:
                 if s is self.server:
