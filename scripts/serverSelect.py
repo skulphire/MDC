@@ -79,14 +79,17 @@ class serverHandle(object):
         str = bite.decode("utf-8")
         return str
     def checkIfLoggedIn(self, data):
-        #Badge:000000#
-        s = self.convertToString(data).split(":")
-        if(s[1] == "000000" and s[0].lower() == "badge"):
-            print("data: %s" % (data))
-            print("s: %s" % (s))
-            print("true")
-            return True
-        else:
-            print("data: %s"%(data))
-            print("s: %s"%(s))
+        #Badge:000000
+        try:
+            s = self.convertToString(data).split(":")
+            if(s[1] == "000000" and s[0].lower() == "badge"):
+                print("data: %s" % (data))
+                print("s: %s" % (s))
+                print("true")
+                return True
+            else:
+                print("data: %s"%(data))
+                print("s: %s"%(s))
+                return False
+        except:
             return False
