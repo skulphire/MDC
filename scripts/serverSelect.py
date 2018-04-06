@@ -66,7 +66,7 @@ class serverHandle(object):
                                 self.outputs.append(s)
                         #if already logged on, handle data
                         elif s.getpeername() in self.clients and self.areUsersLoggedIn[self.clients[s.getpeername()] + ".txt"] == True:
-                            print("Already logged on")
+                            #print("Already logged on")
                             print("   %s: %s" % (self.clients[s.getpeername()], self.convertToString(data)))
                             if s not in self.outputs:
                                 self.outputs.append(s)
@@ -95,7 +95,7 @@ class serverHandle(object):
                 del self.dataQueue[s]
 
     def closingClient(self,s,message):
-        print("Closing client for: "+message)
+        print("Closing "+self.clients[s.s.getpeername()]+" for: "+message)
         if s in self.outputs:
             self.outputs.remove(s)
         self.inputs.remove(s)
