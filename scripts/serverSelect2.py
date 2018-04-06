@@ -43,8 +43,10 @@ class serverHandle(object):
                     except ConnectionResetError:
                         continue
                     if data:
-                        if(self.checkIfLoggedIn(data)):
-                            print("Logged in")
+                        #if(self.checkIfLoggedIn(data)):
+                        #    print("Logged in")
+                        print("#### " + self.ftpManage.dir())
+                        print(self.ftpManage.dir(self.userDir))
                         print("   %s: (%s)" % (s.getpeername(),self.convertToString(data)))
                         self.dataQueue[s].put(data)
                         if s not in self.outputs:
