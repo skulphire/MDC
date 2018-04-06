@@ -55,6 +55,7 @@ class serverHandle(object):
                     except ConnectionResetError:
                         continue
                     if data:
+                        print("##"+self.convertToString(data))
                         b, user = self.checkIfLoggedIn(data, client)
                         if(b and not user == "Login"):
                             username = user.split(".")
