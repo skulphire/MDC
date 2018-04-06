@@ -65,7 +65,7 @@ class serverHandle(object):
                             if s not in self.outputs:
                                 self.outputs.append(s)
                         #if already logged on, handle data
-                        elif not b or self.areUsersLoggedIn[self.clients[client] + ".txt"] == True:
+                        elif client in self.clients and self.areUsersLoggedIn[self.clients[client] + ".txt"] == True:
                             print("Already logged on")
                             print("   %s: %s" % (self.clients[client], self.convertToString(data)))
                             if s not in self.outputs:
