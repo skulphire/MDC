@@ -117,7 +117,7 @@ class serverHandle(object):
                     #is it a valid user
                     if s[1]+".txt" == user:
                         #if valid user set as logged in
-                        self.areUsersLoggedIn[user + ".txt"] = True
+                        self.areUsersLoggedIn[user] = True
                         b = True
                         break
                     else:
