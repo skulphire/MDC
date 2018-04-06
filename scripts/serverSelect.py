@@ -58,7 +58,11 @@ class serverHandle(object):
                     if data:
                         peer = s.getpeername()
                         #if not logged on, try to login
-                        b, user = self.checkIfLoggedIn(data, peer)
+                        if peer in self.clients and self.areUsersLoggedIn[self.clients[peer] + ".txt"] == False:
+                            b, user = self.checkIfLoggedIn(data, peer)
+                        else:
+                            b = False
+                            user = ""
                         if(b and not user == "Login"):
                             username = user.split(".")
                             self.clients[s.getpeername()] = username[0]
@@ -67,7 +71,7 @@ class serverHandle(object):
                             if s not in self.outputs:
                                 self.outputs.append(s)
                         #if already logged on, handle data
-                        elif s.getpeername() in self.clients and self.areUsersLoggedIn[self.clients[peer] + ".txt"] == True:
+                        elif peer in self.clients and self.areUsersLoggedIn[self.clients[peer] + ".txt"] == True:
                             #print("Already logged on")
                             print("   %s: %s" % (self.clients[peer], self.convertToString(data)))
                             if s not in self.outputs:
