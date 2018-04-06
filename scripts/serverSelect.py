@@ -55,25 +55,31 @@ class serverHandle(object):
                     except ConnectionResetError:
                         continue
                     if data:
-                        print("##"+self.convertToString(data))
-                        b, user = self.checkIfLoggedIn(data, client)
-                        if(b and not user == "Login"):
-                            username = user.split(".")
-                            self.clients[client] = username[0]
-                            print("Logged in")
-                            print("   %s: %s" % (self.clients[client], self.convertToString(data)))
-                            if s not in self.outputs:
-                                self.outputs.append(s)
-                        elif self.areUsersLoggedIn[self.clients[client]+".txt"] == True:
-                            print("Already logged on")
-                            print("   %s: %s" % (self.clients[client], self.convertToString(data)))
-                            if s not in self.outputs:
-                                self.outputs.append(s)
-                        else:
-                            print("Cannot allow client")
-                            self.closingClient(s,"Client not allowed")
+                        skip = False
+                        #if already logged on, handle data
+                        try:
+                            if self.areUsersLoggedIn[self.clients[client]+".txt"] == True:
+                                skip = True
+                                print("Already logged on")
+                                print("   %s: %s" % (self.clients[client], self.convertToString(data)))
+                                if s not in self.outputs:
+                                    self.outputs.append(s)
+                        except Exception:
+                            continue
 
-                        #self.dataQueue[s].put(data)
+                        #if not logged on, try to login
+                        if(skip):
+                            b, user = self.checkIfLoggedIn(data, client)
+                            if(b and not user == "Login"):
+                                username = user.split(".")
+                                self.clients[client] = username[0]
+                                print("Logged in")
+                                print("   %s: %s" % (self.clients[client], self.convertToString(data)))
+                                if s not in self.outputs:
+                                    self.outputs.append(s)
+                            else:
+                                print("Cannot allow client")
+                                self.closingClient(s,"Client not allowed")
                     else:
                         self.closingClient(s,"disconnect")
 
