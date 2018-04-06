@@ -64,7 +64,7 @@ class serverHandle(object):
                             print("   %s: %s" % (self.clients[client], self.convertToString(data)))
                             if s not in self.outputs:
                                 self.outputs.append(s)
-                        elif b:
+                        elif self.areUsersLoggedIn[self.clients[client]+".txt"] == True:
                             print("Already logged on")
                             print("   %s: %s" % (self.clients[client], self.convertToString(data)))
                             if s not in self.outputs:
@@ -126,8 +126,4 @@ class serverHandle(object):
                 return False, "invalid"
             return b, s[1]
         except:
-            print("excepted")
-            if self.areUsersLoggedIn[self.clients[client]+".txt"] == True:
-                return True, "Login"
-            else:
-                return False, "invalid"
+            return False, "invalid"
