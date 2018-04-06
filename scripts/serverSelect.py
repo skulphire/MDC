@@ -63,7 +63,7 @@ class serverHandle(object):
                             print("   %s: %s" % (self.clients[client], self.convertToString(data)))
                             if s not in self.outputs:
                                 self.outputs.append(s)
-                        elif b and user == "Login":
+                        elif b:
                             print("Already logged on")
                             print("   %s: %s" % (self.clients[client], self.convertToString(data)))
                             if s not in self.outputs:
