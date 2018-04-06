@@ -95,7 +95,10 @@ class serverHandle(object):
                 del self.dataQueue[s]
 
     def closingClient(self,s,message):
-        print("Closing "+self.clients[s.s.getpeername()]+" for: "+message)
+        if s.getpeername() in self.clients:
+            print("Closing "+self.clients[s.getpeername()]+" for: "+message)
+        else:
+            print("Closing "+s.getpeername()+" for: "+message)
         if s in self.outputs:
             self.outputs.remove(s)
         self.inputs.remove(s)
