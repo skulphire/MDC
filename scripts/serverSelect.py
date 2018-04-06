@@ -85,5 +85,5 @@ class serverHandle(object):
             return True
         else:
             print("data: %s"%(data))
-            print("s: $s"%(s))
+            print("s: %s"%(s))
             return False
