@@ -79,5 +79,6 @@ class serverHandle(object):
         str = bite.decode("utf-8")
         return str
     def checkIfLoggedIn(self, data):
+        print("#### "+self.ftpManage.dir())
         print(self.ftpManage.dir(self.userDir))
         return True
