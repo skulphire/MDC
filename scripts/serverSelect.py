@@ -70,11 +70,11 @@ class serverHandle(object):
                                 self.outputs.append(s)
                         else:
                             print("Cannot allow client")
-                            self.closingClient(s,"Client not allowed",client)
+                            self.closingClient(s,"Client not allowed")
 
                         #self.dataQueue[s].put(data)
                     else:
-                        self.closingClient(s,"disconnect",client)
+                        self.closingClient(s,"disconnect")
 
             for s in writable:
                 try:
@@ -94,8 +94,8 @@ class serverHandle(object):
                 s.close()
                 del self.dataQueue[s]
 
-    def closingClient(self,s,message,client):
-        print("Closing client for:"+message+"> %s"% (s.getpeername()))
+    def closingClient(self,s,message):
+        print("Closing client for:"+message)
         if s in self.outputs:
             self.outputs.remove(s)
         self.inputs.remove(s)
@@ -125,6 +125,7 @@ class serverHandle(object):
                 return False, "invalid"
             return b, s[1]
         except:
+            print("excepted")
             if self.areUsersLoggedIn[self.clients[client]+".txt"] == True:
                 return True, "Login"
             else:
