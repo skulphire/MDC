@@ -15,10 +15,10 @@ class serverHandle(object):
             self.ftpManage.cwd(self.userDir)
             self.validUsers = self.ftpManage.nlst()
             if "21146.txt" in self.validUsers:
-                print("checkeed")
+                print("checked")
         except Exception:
             print("No files in this directory")
-        self.ftpManage.cwd("MDC")
+        self.ftpManage.cwd("../")
         self.dataQueue = {}
         self.outputs = []
         self.server = socket(AF_INET, SOCK_STREAM)
