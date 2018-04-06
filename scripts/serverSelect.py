@@ -8,6 +8,7 @@ class serverHandle(object):
         # ftp
         self.ftpManage = FTP("www.adpscommunity.com")
         self.ftpManage.login("MDC@adpscommunity.com", "ADPSadmin")
+        self.ftpManage.cwd("MDC")
         self.userDir = "ADPS-Users/"
         print("#### " + self.ftpManage.dir())
         print(self.ftpManage.dir(self.userDir))
