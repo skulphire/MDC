@@ -10,7 +10,7 @@ class serverHandle(object):
         self.ftpManage.login("MDC@adpscommunity.com", "ADPSadmin")
         self.ftpManage.cwd("MDC")
         self.userDir = "ADPS-Users/"
-        print("#### " + self.ftpManage.dir())
+        print("#### ",self.ftpManage.dir())
         print(self.ftpManage.dir(self.userDir))
 
         self.dataQueue = {}
