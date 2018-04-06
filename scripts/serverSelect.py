@@ -11,12 +11,12 @@ class serverHandle(object):
         self.ftpManage.login("MDC@adpscommunity.com", "ADPSadmin")
         self.ftpManage.cwd("MDC")
         self.userDir = "ADPS-Users/"
-        self.usersLoggedIn = {}
+        self.areUsersLoggedIn = {}
         try:
             self.ftpManage.cwd(self.userDir)
             self.validUsers = self.ftpManage.nlst()
             for user in self.validUsers:
-                self.usersLoggedIn[user] = False
+                self.areUsersLoggedIn[user] = False
             self.ftpManage.cwd("../")
         except Exception:
             print("No files in this directory")
@@ -60,17 +60,19 @@ class serverHandle(object):
                             username = user.split(".")
                             self.clients[client] = username[0]
                             print("Logged in")
-                            print("   %s: >%s" % (self.clients[client], self.convertToString(data)))
+                            print("   %s: %s" % (self.clients[client], self.convertToString(data)))
+                            if s not in self.outputs:
+                                self.outputs.append(s)
                         elif b and user == "Login":
                             print("Already logged on")
-                            print("   %s: >%s" % (self.clients[client], self.convertToString(data)))
+                            print("   %s: %s" % (self.clients[client], self.convertToString(data)))
+                            if s not in self.outputs:
+                                self.outputs.append(s)
                         else:
                             print("Cannot allow client")
                             self.closingClient(s,"Client not allowed",client)
 
                         #self.dataQueue[s].put(data)
-                        #if s not in self.outputs:
-                        #    self.outputs.append(s)
                     else:
                         self.closingClient(s,"disconnect",client)
 
@@ -93,7 +95,7 @@ class serverHandle(object):
                 del self.dataQueue[s]
 
     def closingClient(self,s,message,client):
-        print("Closing client for:"+message+"> %s"% (self.usersLoggedIn[client]))
+        print("Closing client for:"+message+"> %s"% (s.getpeername()))
         if s in self.outputs:
             self.outputs.remove(s)
         self.inputs.remove(s)
@@ -114,21 +116,16 @@ class serverHandle(object):
                     #is it a valid user
                     if s[1]+".txt" == user:
                         #if valid user set as logged in
-                        self.usersLoggedIn[user+".txt"] = True
-                        print("data: %s" % (data))
-                        print("s: %s" % (s))
-                        print("true")
+                        self.areUsersLoggedIn[user + ".txt"] = True
                         b = True
                         break
                     else:
-                        print("data: %s"%(data))
-                        print("s: %s"%(s))
                         b = False
             else:
                 return False, "invalid"
             return b, s[1]
         except:
-            if self.usersLoggedIn[self.usersLoggedIn[client]] == True:
+            if self.areUsersLoggedIn[self.clients[client]+".txt"] == True:
                 return True, "Login"
             else:
                 return False, "invalid"
