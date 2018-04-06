@@ -50,12 +50,13 @@ class serverHandle(object):
                     self.inputs.append(connection)
                     self.dataQueue[connection] = queue.Queue()
                 else:
-                    peer = s.getpeername()
+
                     try:
                         data = s.recv(1024)
                     except ConnectionResetError:
                         continue
                     if data:
+                        peer = s.getpeername()
                         #if not logged on, try to login
                         b, user = self.checkIfLoggedIn(data, peer)
                         if(b and not user == "Login"):
@@ -75,7 +76,7 @@ class serverHandle(object):
                             print("Cannot allow client")
                             self.closingClient(s,"Client not allowed",peer)
                     else:
-                        self.closingClient(s,"Disconnect",peer)
+                        self.closingClient(s,"Disconnect")
 
             for s in writable:
                 try:
@@ -95,8 +96,8 @@ class serverHandle(object):
                 s.close()
                 del self.dataQueue[s]
 
-    def closingClient(self,s,message,peer):
-        if peer in self.clients:
+    def closingClient(self,s,message,peer=None):
+        if peer != None and peer in self.clients:
             print("Closing "+self.clients[peer]+" for: "+message)
         else:
             print("Closing Client for: "+message)
