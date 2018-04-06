@@ -7,7 +7,7 @@ class serverHandle(object):
     def __init__(self, port=9130,addr="172.31.82.100"):
         #ftp
         self.ftpManage = FTP("ftp.adpscommunity.com")
-        self.ftpManage.login("MDC@adpscommunity.com","ADPSadmin")
+        self.ftpManage.login("MDC","ADPSadmin")
         self.userDir = "ADPS-Users/"
 
         #tcp
@@ -43,11 +43,7 @@ class serverHandle(object):
                     except ConnectionResetError:
                         continue
                     if data:
-                        #if(self.checkIfLoggedIn(data)):
-                        #    print("Logged in")
-                        print("#### " + self.ftpManage.dir())
-                        print(self.ftpManage.dir(self.userDir))
-                        print("   %s: (%s)" % (s.getpeername(),self.convertToString(data)))
+                        print("   %s: >%s" % (s.getpeername(),self.convertToString(data)))
                         self.dataQueue[s].put(data)
                         if s not in self.outputs:
                             self.outputs.append(s)
