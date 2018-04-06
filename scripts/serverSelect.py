@@ -10,7 +10,9 @@ class serverHandle(object):
         self.ftpManage.login("MDC@adpscommunity.com", "ADPSadmin")
         self.ftpManage.cwd("MDC")
         self.userDir = "ADPS-Users/"
-
+        self.validUsers = self.ftpManage.dir(self.userDir)
+        if "21146.txt" in self.validUsers:
+            print("checkeed")
         self.dataQueue = {}
         self.outputs = []
         self.server = socket(AF_INET, SOCK_STREAM)
