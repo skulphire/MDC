@@ -68,7 +68,7 @@ class serverHandle(object):
                             continue
 
                         #if not logged on, try to login
-                        if(skip):
+                        if not skip:
                             b, user = self.checkIfLoggedIn(data, client)
                             if(b and not user == "Login"):
                                 username = user.split(".")
