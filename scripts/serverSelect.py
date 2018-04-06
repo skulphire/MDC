@@ -2,6 +2,7 @@ import select
 import queue
 from socket import *
 from ftplib import FTP
+import ftplib
 
 class serverHandle(object):
     def __init__(self, port=9130,addr="172.31.82.100"):
@@ -10,7 +11,12 @@ class serverHandle(object):
         self.ftpManage.login("MDC@adpscommunity.com", "ADPSadmin")
         self.ftpManage.cwd("MDC")
         self.userDir = "ADPS-Users/"
-        self.validUsers = self.ftpManage.dir(self.userDir)
+        try:
+            self.ftpManage.cwd("MDC/" + self.userDir)
+            self.validUsers = self.ftpManage.nlst()
+        except Exception:
+            print("No files in this directory")
+
         if "21146.txt" in self.validUsers:
             print("checkeed")
         self.dataQueue = {}
