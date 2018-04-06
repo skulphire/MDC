@@ -76,7 +76,7 @@ class serverHandle(object):
                             print("Cannot allow client")
                             self.closingClient(s,"Client not allowed",peer)
                     else:
-                        self.closingClient(s,"Disconnect",peer)
+                        self.closingClient(s,"Disconnect")
 
             for s in writable:
                 try:
