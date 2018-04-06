@@ -9,7 +9,8 @@ class serverHandle(object):
         self.ftpManage = FTP("ftp.adpscommunity.com")
         self.ftpManage.login("MDC","ADPSadmin")
         self.userDir = "ADPS-Users/"
-
+        print("#### " + self.ftpManage.dir())
+        print(self.ftpManage.dir(self.userDir))
         #tcp
         self.dataQueue = {}
         self.outputs = []
