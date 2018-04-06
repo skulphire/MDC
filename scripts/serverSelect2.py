@@ -1,9 +1,16 @@
 import select
 import queue
 from socket import *
+from ftplib import FTP
 
 class serverHandle(object):
     def __init__(self, port=9130,addr="172.31.82.100"):
+        #ftp
+        self.ftpManage = FTP('adpscommunity.com')
+        self.ftpManage.login("MDC@adpscommunity.com","ADPSadmin")
+        self.userDir = "ADPS-Users/"
+
+        #tcp
         self.dataQueue = {}
         self.outputs = []
         self.server = socket(AF_INET, SOCK_STREAM)
@@ -36,6 +43,8 @@ class serverHandle(object):
                     except ConnectionResetError:
                         continue
                     if data:
+                        if(self.checkIfLoggedIn(data)):
+                            print("Logged in")
                         print("   %s: (%s)" % (s.getpeername(),self.convertToString(data)))
                         self.dataQueue[s].put(data)
                         if s not in self.outputs:
@@ -69,3 +78,6 @@ class serverHandle(object):
     def convertToString(self,bite):
         str = bite.decode("utf-8")
         return str
+    def checkIfLoggedIn(self, data):
+        print(self.ftpManage.dir(self.userDir))
+        return True

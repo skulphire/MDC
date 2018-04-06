@@ -1,8 +1,7 @@
-from scripts import SocketHandler
-
+from scripts import serverSelect
 if __name__ == '__main__':
-    socket = SocketHandler.SocketHandle()
+    server = serverSelect.serverHandle()
     try:
-        socket.createServer()
+        server.start()
     except KeyboardInterrupt:
-        socket.closeServer()
+        exit(0)
