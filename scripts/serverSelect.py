@@ -58,7 +58,7 @@ class serverHandle(object):
                     if data:
                         peer = s.getpeername()
                         #if not logged on, try to login
-                        if peer in self.clients and self.areUsersLoggedIn[self.clients[peer] + ".txt"] == False:
+                        if peer not in self.clients or self.areUsersLoggedIn[self.clients[peer] + ".txt"] == False:
                             b, user = self.checkIfLoggedIn(data, peer)
                         else:
                             b = False
