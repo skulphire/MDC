@@ -10,8 +10,6 @@ class serverHandle(object):
         self.ftpManage.login("MDC@adpscommunity.com", "ADPSadmin")
         self.ftpManage.cwd("MDC")
         self.userDir = "ADPS-Users/"
-        print("#### ",self.ftpManage.dir())
-        print(self.ftpManage.dir(self.userDir))
 
         self.dataQueue = {}
         self.outputs = []
@@ -45,6 +43,8 @@ class serverHandle(object):
                     except ConnectionResetError:
                         continue
                     if data:
+                        if(self.checkIfLoggedIn(data)):
+                            print("Logged in")
                         print("   %s: (%s)" % (s.getpeername(),self.convertToString(data)))
                         self.dataQueue[s].put(data)
                         if s not in self.outputs:
@@ -78,3 +78,12 @@ class serverHandle(object):
     def convertToString(self,bite):
         str = bite.decode("utf-8")
         return str
+    def checkIfLoggedIn(self, data):
+        #Badge:000000#
+        s = data.split(":,#")
+        if(s == "000000"):
+            return True
+        else:
+            print("data: %s"%(data))
+            print("s: "+s)
+            return False
