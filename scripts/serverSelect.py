@@ -11,14 +11,18 @@ class serverHandle(object):
         self.ftpManage.login("MDC@adpscommunity.com", "ADPSadmin")
         self.ftpManage.cwd("MDC")
         self.userDir = "ADPS-Users/"
+        self.usersLoggedIn = {}
         try:
             self.ftpManage.cwd(self.userDir)
             self.validUsers = self.ftpManage.nlst()
-            if "21146.txt" in self.validUsers:
-                print("checked")
+            for user in self.validUsers:
+                self.usersLoggedIn[user] = False
+            self.ftpManage.cwd("../")
         except Exception:
             print("No files in this directory")
-        self.ftpManage.cwd("../")
+            self.ftpManage.cwd("../")
+
+        self.clients = {}
         self.dataQueue = {}
         self.outputs = []
         self.server = socket(AF_INET, SOCK_STREAM)
@@ -51,19 +55,24 @@ class serverHandle(object):
                     except ConnectionResetError:
                         continue
                     if data:
-                        if(self.checkIfLoggedIn(data)):
+                        b, user = self.checkIfLoggedIn(data, client)
+                        if(b and not user == "Login"):
+                            username = user.split(".")
+                            self.clients[client] = username[0]
                             print("Logged in")
-                        print("   %s: (%s)" % (s.getpeername(),self.convertToString(data)))
-                        self.dataQueue[s].put(data)
-                        if s not in self.outputs:
-                            self.outputs.append(s)
+                            print("   %s: >%s" % (self.clients[client], self.convertToString(data)))
+                        elif b and user == "Login":
+                            print("Already logged on")
+                            print("   %s: >%s" % (self.clients[client], self.convertToString(data)))
+                        else:
+                            print("Cannot allow client")
+                            self.closingClient(s,"Client not allowed",client)
+
+                        #self.dataQueue[s].put(data)
+                        #if s not in self.outputs:
+                        #    self.outputs.append(s)
                     else:
-                        print("   Closing client with no data: ",client)
-                        if s in self.outputs:
-                            self.outputs.remove(s)
-                        self.inputs.remove(s)
-                        s.close()
-                        del self.dataQueue[s]
+                        self.closingClient(s,"disconnect",client)
 
             for s in writable:
                 try:
@@ -72,7 +81,7 @@ class serverHandle(object):
                     #print("   Output queue Is empty for: ",s.getpeername())
                     self.outputs.remove(s)
                 else:
-                    print("   Sending: (%s) to %s" % (self.convertToString(nextMsg),s.getpeername()))
+                    print("   Sending: >%s< to %s" % (self.convertToString(nextMsg),s.getpeername()))
                     s.send(nextMsg)
 
             for s in e:
@@ -83,21 +92,43 @@ class serverHandle(object):
                 s.close()
                 del self.dataQueue[s]
 
+    def closingClient(self,s,message,client):
+        print("Closing client for:"+message+"> %s"% (self.usersLoggedIn[client]))
+        if s in self.outputs:
+            self.outputs.remove(s)
+        self.inputs.remove(s)
+        s.close()
+        del self.dataQueue[s]
+
     def convertToString(self,bite):
         str = bite.decode("utf-8")
         return str
-    def checkIfLoggedIn(self, data):
+    def checkIfLoggedIn(self, data, client):
+        b = False
         #Badge:000000
         try:
             s = self.convertToString(data).split(":")
-            if(s[1] == "000000" and s[0].lower() == "badge"):
-                print("data: %s" % (data))
-                print("s: %s" % (s))
-                print("true")
-                return True
+            #is this a login attempt
+            if(s[0].lower() == "badge"):
+                for user in self.validUsers:
+                    #is it a valid user
+                    if s[1]+".txt" == user:
+                        #if valid user set as logged in
+                        self.usersLoggedIn[user+".txt"] = True
+                        print("data: %s" % (data))
+                        print("s: %s" % (s))
+                        print("true")
+                        b = True
+                        break
+                    else:
+                        print("data: %s"%(data))
+                        print("s: %s"%(s))
+                        b = False
             else:
-                print("data: %s"%(data))
-                print("s: %s"%(s))
-                return False
+                return False, "invalid"
+            return b, s[1]
         except:
-            return False
+            if self.usersLoggedIn[self.usersLoggedIn[client]] == True:
+                return True, "Login"
+            else:
+                return False, "invalid"
