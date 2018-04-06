@@ -81,7 +81,10 @@ class serverHandle(object):
     def checkIfLoggedIn(self, data):
         #Badge:000000#
         s = self.convertToString(data).split(":")
-        if(s[1] == "000000"):
+        if(s[1] == "000000" and s[0].lower() == "badge"):
+            print("data: %s" % (data))
+            print("s: %s" % (s))
+            print("true")
             return True
         else:
             print("data: %s"%(data))
