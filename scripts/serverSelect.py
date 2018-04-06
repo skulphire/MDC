@@ -6,8 +6,8 @@ from ftplib import FTP
 class serverHandle(object):
     def __init__(self, port=9130,addr="172.31.82.100"):
         # ftp
-        self.ftpManage = FTP("ftp.adpscommunity.com")
-        self.ftpManage.login("MDC", "ADPSadmin")
+        self.ftpManage = FTP("ftp://www.adpscommunity.com/MDC/")
+        self.ftpManage.login("MDC@adpscommunity.com", "ADPSadmin")
         self.userDir = "ADPS-Users/"
         print("#### " + self.ftpManage.dir())
         print(self.ftpManage.dir(self.userDir))
