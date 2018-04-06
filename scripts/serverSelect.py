@@ -56,25 +56,25 @@ class serverHandle(object):
                         continue
                     if data:
                         #if not logged on, try to login
-                        b, user = self.checkIfLoggedIn(data, client)
+                        b, user = self.checkIfLoggedIn(data, s.getpeername())
                         if(b and not user == "Login"):
                             username = user.split(".")
-                            self.clients[client] = username[0]
+                            self.clients[s.getpeername()] = username[0]
                             print("Logged in")
-                            print("   %s: %s" % (self.clients[client], self.convertToString(data)))
+                            print("   %s: %s" % (self.clients[s.getpeername()], self.convertToString(data)))
                             if s not in self.outputs:
                                 self.outputs.append(s)
                         #if already logged on, handle data
-                        elif client in self.clients and self.areUsersLoggedIn[self.clients[client] + ".txt"] == True:
+                        elif s.getpeername() in self.clients and self.areUsersLoggedIn[self.clients[s.getpeername()] + ".txt"] == True:
                             print("Already logged on")
-                            print("   %s: %s" % (self.clients[client], self.convertToString(data)))
+                            print("   %s: %s" % (self.clients[s.getpeername()], self.convertToString(data)))
                             if s not in self.outputs:
                                 self.outputs.append(s)
                         else:
                             print("Cannot allow client")
                             self.closingClient(s,"Client not allowed")
                     else:
-                        self.closingClient(s,"disconnect")
+                        self.closingClient(s,"Disconnect")
 
             for s in writable:
                 try:
@@ -95,7 +95,7 @@ class serverHandle(object):
                 del self.dataQueue[s]
 
     def closingClient(self,s,message):
-        print("Closing client for:"+message)
+        print("Closing client for: "+message)
         if s in self.outputs:
             self.outputs.remove(s)
         self.inputs.remove(s)
