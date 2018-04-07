@@ -150,9 +150,9 @@ class serverHandle(object):
             if(s[0].lower() == "badge"):
                 for user in self.validUsers:
                     #is it a valid user
-                    if s[1]+".txt" == user and self.areUsersLoggedIn[user+".txt"] == False:
+                    if s[1]+".txt" == user and self.areUsersLoggedIn[user] == False:
                         #if valid user set as logged in
-                        self.areUsersLoggedIn[user+".txt"] = True
+                        self.areUsersLoggedIn[user] = True
                         b = True
                         break
                     else:
