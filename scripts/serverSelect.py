@@ -105,6 +105,7 @@ class serverHandle(object):
                                         t = user.split(".")
                                         user = t[0]
                                         sending = sending+":"+user
+                                print("   %s: %s" % (self.clients[peer], sending))
                                 s.send(self.convertToBytes(sending))
 
                             print("   %s: %s" % (self.clients[peer], message))
