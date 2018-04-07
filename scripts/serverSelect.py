@@ -83,7 +83,7 @@ class serverHandle(object):
                                 #sending[2] = message
                                 if sending[1] in self.clientsIP:
                                     reciever = self.clientsIP[sending[1]]
-                                    s.sendto(sending[2],self.convertToBytes(reciever))
+                                    s.sendto(self.convertToBytes(sending[2]),reciever)
                                 else:
                                     s.send("Invalid")
 
