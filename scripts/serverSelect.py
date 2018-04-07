@@ -144,6 +144,7 @@ class serverHandle(object):
 
     def clearCustomDicts(self,peer):
         print("Deleting user")
+        print(self.clients[peer])
         self.areUsersLoggedIn[self.clients[peer] + ".txt"] = False
         print(self.areUsersLoggedIn)
         del self.clientsIP[self.clients[peer]]
