@@ -26,6 +26,7 @@ class serverHandle(object):
         self.clients = {}
         self.dataQueue = {}
         self.outputs = []
+        self.sender = socket(AF_INET, SOCK_STREAM)
         self.server = socket(AF_INET, SOCK_STREAM)
         self.server.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
         self.server.setblocking(0)
@@ -83,9 +84,9 @@ class serverHandle(object):
                                 #sending[2] = message
                                 if sending[1] in self.clientsIP:
                                     reciever = self.clientsIP[sending[1]]
-                                    s.sendto(self.convertToBytes(sending[2]),reciever)
+                                    self.sender.sendto(self.convertToBytes(sending[2]),reciever)
                                 else:
-                                    s.send("Invalid")
+                                    s.send(self.convertToBytes("Invalid"))
 
                             print("   %s: %s" % (self.clients[peer], message))
                             if s not in self.outputs:
@@ -115,9 +116,6 @@ class serverHandle(object):
                 s.close()
                 del self.dataQueue[s]
 
-    def sendToClient(self,sender,reciever,message,peer):
-
-        return s
     def closingClient(self,s,message,peer=None):
         if peer != None and peer in self.clients:
             print("Closing "+self.clients[peer]+" for: "+message)
