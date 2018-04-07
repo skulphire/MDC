@@ -77,6 +77,7 @@ class serverHandle(object):
                             if s not in self.outputs:
                                 self.outputs.append(s)
                         else:
+                            #self.dataQueue[s] = self.convertToBytes("Close")
                             print("Cannot allow client")
                             self.closingClient(s,"Client not allowed",peer)
                     else:
