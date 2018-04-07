@@ -55,7 +55,10 @@ class serverHandle(object):
                     try:
                         peer = s.getpeername()
                     except Exception:
-                        self.closingClient(s,"Crashed",peer)
+                        try:
+                            self.closingClient(s,"Crashed",peer)
+                        except Exception:
+                            self.closingClient(s,"Crashed")
                     try:
                         data = s.recv(1024)
                     except Exception:
