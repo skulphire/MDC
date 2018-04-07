@@ -58,7 +58,7 @@ class serverHandle(object):
                         self.closingClient(s,"Crashed");
                     try:
                         data = s.recv(1024)
-                    except ConnectionResetError:
+                    except Exception:
                         continue
                     if data:
                         #if not logged on, try to login
