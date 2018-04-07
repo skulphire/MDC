@@ -105,7 +105,7 @@ class serverHandle(object):
                                     user = t[0]
                                     if user is not "":
                                         sending = sending+":"+user
-                                print("   %s: %s" % (self.clients[peer], sending))
+                                print("   %s: %s" % ("sending to:"+self.clients[peer], sending))
                                 s.send(self.convertToBytes(sending))
 
                             print("   %s: %s" % (self.clients[peer], message))
