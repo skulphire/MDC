@@ -94,8 +94,16 @@ class serverHandle(object):
                                 if sending[1] in self.clientsIP:
                                     reciever = self.clientsIP[sending[1]]
                                     reciever.send(self.convertToBytes(sending[2]))
+                                    s.send(self.convertToBytes("Valid"))
                                 else:
                                     s.send(self.convertToBytes("Invalid"))
+                            #get user list
+                            elif "userlist" in message.lower():
+                                sending = "userlist"
+                                for user in self.clients:
+                                    if(user is not self.clients[peer]):
+                                        sending = sending+":"+user
+                                s.send(self.convertToBytes(sending))
 
                             print("   %s: %s" % (self.clients[peer], message))
                             if s not in self.outputs:
