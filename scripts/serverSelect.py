@@ -55,7 +55,7 @@ class serverHandle(object):
                     try:
                         peer = s.getpeername()
                     except Exception:
-                        self.closingClient(s,"Crashed");
+                        self.closingClient(s,"Crashed",peer)
                     try:
                         data = s.recv(1024)
                     except Exception:
@@ -127,8 +127,11 @@ class serverHandle(object):
         del self.clients[peer]
     def closingClient(self,s,message,peer=None):
         if peer != None and peer in self.clients:
-            print("Closing "+self.clients[peer]+" for: "+message)
-            self.clearCustomDicts(peer)
+            try:
+                print("Closing "+self.clients[peer]+" for: "+message)
+                self.clearCustomDicts(peer)
+            except Exception:
+                print("Closing Client for: " + message)
         else:
             print("Closing Client for: "+message)
             #self.clearCustomDicts(peer)
