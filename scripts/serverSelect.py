@@ -16,8 +16,10 @@ class serverHandle(object):
         try:
             self.ftpManage.cwd(self.userDir)
             self.validUsers = self.ftpManage.nlst()
+            del self.validUsers[0]
+            del self.validUsers[1]
             for user in self.validUsers:
-                #print("user"+user)
+                print("user"+user)
                 self.areUsersLoggedIn[user] = False
             self.ftpManage.cwd("../")
         except Exception:
@@ -100,9 +102,11 @@ class serverHandle(object):
                             #get user list
                             elif "userlist" in message.lower():
                                 sending = "userlist"
-                                for user in self.clients:
-                                    #if(user is self.areUsersLoggedIn[user]):
-                                   sending = sending+":"+user
+                                for user in self.validUsers:
+                                    if(user is self.areUsersLoggedIn[user]):
+                                        t = user.split(".")
+                                        user = t[0]
+                                        sending = sending+":"+user
                                 s.send(self.convertToBytes(sending))
 
                             print("   %s: %s" % (self.clients[peer], message))
