@@ -26,7 +26,6 @@ class serverHandle(object):
         self.clients = {}
         self.dataQueue = {}
         self.outputs = []
-        self.sender = socket(AF_INET, SOCK_STREAM)
         self.server = socket(AF_INET, SOCK_STREAM)
         self.server.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
         self.server.setblocking(0)
@@ -84,7 +83,7 @@ class serverHandle(object):
                                 #sending[2] = message
                                 if sending[1] in self.clientsIP:
                                     reciever = self.clientsIP[sending[1]]
-                                    self.sender.sendto(self.convertToBytes(sending[2]),reciever)
+                                    reciever.send(self.convertToBytes(sending[2]))
                                 else:
                                     s.send(self.convertToBytes("Invalid"))
 
