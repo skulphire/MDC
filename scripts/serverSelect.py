@@ -79,7 +79,7 @@ class serverHandle(object):
                             print("Logged in")
                             print("   %s: %s" % (self.clients[peer], self.convertToString(data)))
                             s.send(self.convertToBytes("Valid"))
-                            time.sleep(.1)
+                            time.sleep(.5)
                             s.send(self.convertToBytes("FTP:MDC@adpscommunity.com:ADPSadmin"))
                             if s not in self.outputs:
                                 self.outputs.append(s)
