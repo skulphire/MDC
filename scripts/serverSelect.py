@@ -78,7 +78,7 @@ class serverHandle(object):
                             print("Logged in")
                             print("   %s: %s" % (self.clients[peer], self.convertToString(data)))
                             s.send(self.convertToBytes("Valid"))
-                            connection.send(self.convertToBytes("FTP:MDC@adpscommunity.com:ADPSadmin"))
+                            s.send(self.convertToBytes("FTP:MDC@adpscommunity.com:ADPSadmin"))
                             if s not in self.outputs:
                                 self.outputs.append(s)
                         #if already logged on, handle data
