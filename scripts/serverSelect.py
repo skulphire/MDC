@@ -16,7 +16,7 @@ class serverHandle(object):
             self.ftpManage.cwd(self.userDir)
             self.validUsers = self.ftpManage.nlst()
             for user in self.validUsers:
-                print("user"+user)
+                #print("user"+user)
                 self.areUsersLoggedIn[user] = False
             self.ftpManage.cwd("../")
         except Exception:
@@ -152,7 +152,7 @@ class serverHandle(object):
                     #is it a valid user
                     if s[1]+".txt" == user and self.areUsersLoggedIn[user+".txt"] == False:
                         #if valid user set as logged in
-                        self.areUsersLoggedIn[user] = True
+                        self.areUsersLoggedIn[user+".txt"] = True
                         b = True
                         break
                     else:
