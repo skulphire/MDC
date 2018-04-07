@@ -57,7 +57,7 @@ class serverHandle(object):
                         peer = s.getpeername()
                     except Exception:
                         try:
-                            self.closingClient(s,"Crashed",peer)
+                            self.closingClient(s,"Crashed or disconnected",peer)
                         except Exception:
                             self.closingClient(s,"Crashed")
                     try:
@@ -84,7 +84,7 @@ class serverHandle(object):
                             if s not in self.outputs:
                                 self.outputs.append(s)
                         #if already logged on, handle data
-                        elif peer in self.clients and self.areUsersLoggedIn[self.clients[peer] + ".txt"] == True:
+                        elif peer in self.clients and self.areUsersLoggedIn[self.clients[peer] + ".txt"] is True:
                             message = self.convertToString(data)
                             #sendto:badge:message
                             if "sendto" in message.lower():
@@ -101,9 +101,12 @@ class serverHandle(object):
                             if s not in self.outputs:
                                 self.outputs.append(s)
                         else:
-                            #self.dataQueue[s] = self.convertToBytes("Close")
-                            print("Cannot allow client")
-                            self.closingClient(s,"Client not allowed",peer)
+                            if self.areUsersLoggedIn[self.clients[peer] + ".txt"] is True:
+                                print("Client already logged in else where")
+                                self.closingClient(s, "logged in else where", peer)
+                            else:
+                                print("Cannot allow client")
+                                self.closingClient(s,"Client not allowed",peer)
                     else:
                         self.closingClient(s,"Disconnect",peer)
 
@@ -127,7 +130,7 @@ class serverHandle(object):
 
     def clearCustomDicts(self,peer):
         print("Deleting user")
-        del self.areUsersLoggedIn[self.clients[peer] + ".txt"]
+        self.areUsersLoggedIn[self.clients[peer] + ".txt"] = False
         del self.clientsIP[self.clients[peer]]
         del self.clients[peer]
     def closingClient(self,s,message,peer=None):
