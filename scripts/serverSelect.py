@@ -68,11 +68,11 @@ class serverHandle(object):
                             self.clients[s.getpeername()] = username[0]
                             print("Logged in")
                             print("   %s: %s" % (self.clients[peer], self.convertToString(data)))
+                            self.dataQueue[s] = self.convertToBytes("Valid")
                             if s not in self.outputs:
                                 self.outputs.append(s)
                         #if already logged on, handle data
                         elif peer in self.clients and self.areUsersLoggedIn[self.clients[peer] + ".txt"] == True:
-                            #print("Already logged on")
                             print("   %s: %s" % (self.clients[peer], self.convertToString(data)))
                             if s not in self.outputs:
                                 self.outputs.append(s)
@@ -89,7 +89,7 @@ class serverHandle(object):
                     #print("   Output queue Is empty for: ",s.getpeername())
                     self.outputs.remove(s)
                 else:
-                    print("   Sending: >%s< to %s" % (self.convertToString(nextMsg),s.getpeername()))
+                    print("   Sending: >%s< to %s" % (self.convertToString(nextMsg),self.clients[s.getpeername()]))
                     s.send(nextMsg)
 
             for s in e:
@@ -114,6 +114,9 @@ class serverHandle(object):
     def convertToString(self,bite):
         str = bite.decode("utf-8")
         return str
+    def convertToBytes(self,str):
+        byteStr = bytes(str,'utf-8')
+        return byteStr
     def checkIfLoggedIn(self, data, client):
         b = False
         #Badge:000000
