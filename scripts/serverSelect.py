@@ -100,7 +100,7 @@ class serverHandle(object):
                             #get user list
                             elif "userlist" in message.lower():
                                 sending = "userlist"
-                                for user in self.validUsers:
+                                for user in self.clients:
                                     #if(user is self.areUsersLoggedIn[user]):
                                    sending = sending+":"+user
                                 s.send(self.convertToBytes(sending))
