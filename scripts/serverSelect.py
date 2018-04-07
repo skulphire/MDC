@@ -75,7 +75,7 @@ class serverHandle(object):
                             self.clients[s.getpeername()] = username[0]
                             self.clientsIP[username[0]] = connection
                             #sending ftp login info
-                            #connection.send(self.convertToBytes("FTP:MDC@adpscommunity.com:ADPSadmin"))
+                            connection.send(self.convertToBytes("FTP:MDC@adpscommunity.com:ADPSadmin"))
                             print("Logged in")
                             print("   %s: %s" % (self.clients[peer], self.convertToString(data)))
                             s.send(self.convertToBytes("Valid"))
