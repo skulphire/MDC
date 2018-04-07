@@ -125,7 +125,7 @@ class serverHandle(object):
             self.clearCustomDicts(peer)
         else:
             print("Closing Client for: "+message)
-            self.clearCustomDicts(peer)
+            #self.clearCustomDicts(peer)
         if s in self.outputs:
             self.outputs.remove(s)
         self.inputs.remove(s)
@@ -146,7 +146,7 @@ class serverHandle(object):
             if(s[0].lower() == "badge"):
                 for user in self.validUsers:
                     #is it a valid user
-                    if s[1]+".txt" == user and self.areUsersLoggedIn[user] == False:
+                    if s[1]+".txt" == user and self.areUsersLoggedIn[user+".txt"] == False:
                         #if valid user set as logged in
                         self.areUsersLoggedIn[user] = True
                         b = True
