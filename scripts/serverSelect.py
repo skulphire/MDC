@@ -52,7 +52,8 @@ class serverHandle(object):
                     self.inputs.append(connection)
                     self.dataQueue[connection] = queue.Queue()
                 else:
-                    peer = s.getpeername()
+                    if s.getpeername() not in self.clients:
+                        peer = s.getpeername()
                     try:
                         data = s.recv(1024)
                     except ConnectionResetError:
