@@ -22,6 +22,7 @@ class serverHandle(object):
             print("No files in this directory")
             self.ftpManage.cwd("../")
 
+        self.clientsIP = {}
         self.clients = {}
         self.dataQueue = {}
         self.outputs = []
@@ -66,6 +67,7 @@ class serverHandle(object):
                         if(b and not user == "Login"):
                             username = user.split(".")
                             self.clients[s.getpeername()] = username[0]
+                            self.clientsIP[username[0]] = client
                             print("Logged in")
                             print("   %s: %s" % (self.clients[peer], self.convertToString(data)))
                             s.send(self.convertToBytes("Valid"))
@@ -73,7 +75,19 @@ class serverHandle(object):
                                 self.outputs.append(s)
                         #if already logged on, handle data
                         elif peer in self.clients and self.areUsersLoggedIn[self.clients[peer] + ".txt"] == True:
-                            print("   %s: %s" % (self.clients[peer], self.convertToString(data)))
+                            message = self.convertToString(data)
+                            #sendto:badge:message
+                            if "sendto" in message.lower():
+                                sending = message.split(":")
+                                #sending[1] = badge
+                                #sending[2] = message
+                                if sending[1] in self.clientsIP:
+                                    reciever = self.clientsIP[sending[1]]
+                                    s.sendto(sending[2],reciever)
+                                else:
+                                    s.send("Invalid")
+
+                            print("   %s: %s" % (self.clients[peer], message))
                             if s not in self.outputs:
                                 self.outputs.append(s)
                         else:
@@ -101,6 +115,9 @@ class serverHandle(object):
                 s.close()
                 del self.dataQueue[s]
 
+    def sendToClient(self,sender,reciever,message,peer):
+
+        return s
     def closingClient(self,s,message,peer=None):
         if peer != None and peer in self.clients:
             print("Closing "+self.clients[peer]+" for: "+message)
@@ -111,7 +128,6 @@ class serverHandle(object):
         self.inputs.remove(s)
         s.close()
         del self.dataQueue[s]
-
     def convertToString(self,bite):
         str = bite.decode("utf-8")
         return str
