@@ -52,7 +52,10 @@ class serverHandle(object):
                     self.inputs.append(connection)
                     self.dataQueue[connection] = queue.Queue()
                 else:
-                    peer = s.getpeername()
+                    try:
+                        peer = s.getpeername()
+                    except Exception:
+                        self.closingClient(s,"Crashed");
                     try:
                         data = s.recv(1024)
                     except ConnectionResetError:
