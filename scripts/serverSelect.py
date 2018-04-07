@@ -103,7 +103,8 @@ class serverHandle(object):
                                 for user in self.validUsers:
                                     t = user.split(".")
                                     user = t[0]
-                                    sending = sending+":"+user
+                                    if user is not "":
+                                        sending = sending+":"+user
                                 print("   %s: %s" % (self.clients[peer], sending))
                                 s.send(self.convertToBytes(sending))
 
