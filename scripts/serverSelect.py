@@ -105,16 +105,19 @@ class serverHandle(object):
                                     user = t[0]
                                     if user is not "":
                                         sending = sending+":"+user
-                                print("   %s> %s" % ("sending to>"+self.clients[peer], sending))
+                                #print("   %s> %s" % ("sending to>"+self.clients[peer], sending))
                                 s.send(self.convertToBytes(sending))
 
                             print("   %s: %s" % (self.clients[peer], message))
                             if s not in self.outputs:
                                 self.outputs.append(s)
                         else:
-                            if self.areUsersLoggedIn[self.clients[peer] + ".txt"] is True:
-                                print("Client already logged in else where")
-                                self.closingClient(s, "logged in else where", peer)
+                            try:
+                                if self.areUsersLoggedIn[self.clients[peer] + ".txt"] is True:
+                                    print("Client already logged in else where")
+                                    self.closingClient(s, "logged in else where", peer)
+                            except:
+                                continue
                             else:
                                 print("Cannot allow client")
                                 self.closingClient(s,"Client not allowed",peer)
