@@ -68,7 +68,7 @@ class serverHandle(object):
                             self.clients[s.getpeername()] = username[0]
                             print("Logged in")
                             print("   %s: %s" % (self.clients[peer], self.convertToString(data)))
-                            self.dataQueue[s] = "Valid"#self.convertToBytes("Valid")
+                            s.send("Valid")
                             if s not in self.outputs:
                                 self.outputs.append(s)
                         #if already logged on, handle data
