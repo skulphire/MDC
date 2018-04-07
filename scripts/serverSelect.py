@@ -67,7 +67,7 @@ class serverHandle(object):
                         if(b and not user == "Login"):
                             username = user.split(".")
                             self.clients[s.getpeername()] = username[0]
-                            self.clientsIP[username[0]] = client
+                            self.clientsIP[username[0]] = connection
                             print("Logged in")
                             print("   %s: %s" % (self.clients[peer], self.convertToString(data)))
                             s.send(self.convertToBytes("Valid"))
@@ -83,7 +83,7 @@ class serverHandle(object):
                                 #sending[2] = message
                                 if sending[1] in self.clientsIP:
                                     reciever = self.clientsIP[sending[1]]
-                                    self.server.sendto(self.convertToBytes(sending[2]),reciever)
+                                    reciever.send(self.convertToBytes(sending[2]))
                                 else:
                                     s.send(self.convertToBytes("Invalid"))
 
