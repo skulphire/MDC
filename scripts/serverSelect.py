@@ -17,11 +17,7 @@ class serverHandle(object):
             self.ftpManage.cwd(self.userDir)
             self.validUsers = self.ftpManage.nlst()
             for user in self.validUsers:
-                if(user == "."):
-                    del user
-                elif(user == ".."):
-                    del user
-                print("user"+user)
+                #print("user>"+user)
                 self.areUsersLoggedIn[user] = False
             self.ftpManage.cwd("../")
         except Exception:
