@@ -51,13 +51,12 @@ class serverHandle(object):
                     self.inputs.append(connection)
                     self.dataQueue[connection] = queue.Queue()
                 else:
-
+                    peer = s.getpeername()
                     try:
                         data = s.recv(1024)
                     except ConnectionResetError:
                         continue
                     if data:
-                        peer = s.getpeername()
                         #if not logged on, try to login
                         if peer not in self.clients or self.areUsersLoggedIn[self.clients[peer] + ".txt"] == False:
                             b, user = self.checkIfLoggedIn(data, peer)
@@ -95,7 +94,7 @@ class serverHandle(object):
                             print("Cannot allow client")
                             self.closingClient(s,"Client not allowed",peer)
                     else:
-                        self.closingClient(s,"Disconnect")
+                        self.closingClient(s,"Disconnect",peer)
 
             for s in writable:
                 try:
@@ -115,11 +114,18 @@ class serverHandle(object):
                 s.close()
                 del self.dataQueue[s]
 
+    def clearCustomDicts(self,peer):
+        print("Deleting user")
+        del self.areUsersLoggedIn[self.clients[peer] + ".txt"]
+        del self.clientsIP[self.clients[peer]]
+        del self.clients[peer]
     def closingClient(self,s,message,peer=None):
         if peer != None and peer in self.clients:
             print("Closing "+self.clients[peer]+" for: "+message)
+            self.clearCustomDicts(peer)
         else:
             print("Closing Client for: "+message)
+            self.clearCustomDicts(peer)
         if s in self.outputs:
             self.outputs.remove(s)
         self.inputs.remove(s)
@@ -140,7 +146,7 @@ class serverHandle(object):
             if(s[0].lower() == "badge"):
                 for user in self.validUsers:
                     #is it a valid user
-                    if s[1]+".txt" == user:
+                    if s[1]+".txt" == user and self.areUsersLoggedIn[user] == False:
                         #if valid user set as logged in
                         self.areUsersLoggedIn[user] = True
                         b = True
