@@ -67,6 +67,8 @@ class serverHandle(object):
                             username = user.split(".")
                             self.clients[s.getpeername()] = username[0]
                             self.clientsIP[username[0]] = connection
+                            #sending ftp login info
+                            #connection.send(self.convertToBytes("FTP:MDC@adpscommunity.com:ADPSadmin"))
                             print("Logged in")
                             print("   %s: %s" % (self.clients[peer], self.convertToString(data)))
                             s.send(self.convertToBytes("Valid"))
@@ -142,6 +144,7 @@ class serverHandle(object):
         #Badge:000000
         try:
             s = self.convertToString(data).split(":")
+            print(s)
             #is this a login attempt
             if(s[0].lower() == "badge"):
                 for user in self.validUsers:
