@@ -101,10 +101,9 @@ class serverHandle(object):
                             elif "userlist" in message.lower():
                                 sending = "userlist"
                                 for user in self.validUsers:
-                                    if(user is self.areUsersLoggedIn[user]):
-                                        t = user.split(".")
-                                        user = t[0]
-                                        sending = sending+":"+user
+                                    t = user.split(".")
+                                    user = t[0]
+                                    sending = sending+":"+user
                                 print("   %s: %s" % (self.clients[peer], sending))
                                 s.send(self.convertToBytes(sending))
 
