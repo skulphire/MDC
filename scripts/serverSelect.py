@@ -52,15 +52,14 @@ class serverHandle(object):
                     self.inputs.append(connection)
                     self.dataQueue[connection] = queue.Queue()
                 else:
-                    if s.getpeername() not in self.clients:
-                        peer = s.getpeername()
+                    peer = s.getpeername()
                     try:
                         data = s.recv(1024)
                     except ConnectionResetError:
                         continue
                     if data:
                         #if not logged on, try to login
-                        if peer not in self.clients or self.areUsersLoggedIn[self.clients[peer] + ".txt"] == False:
+                        if peer not in self.clients or self.areUsersLoggedIn[self.clients[peer] + ".txt"] is False:
                             b, user = self.checkIfLoggedIn(data, peer)
                         else:
                             b = False
