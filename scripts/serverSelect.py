@@ -24,6 +24,7 @@ class serverHandle(object):
             print("No files in this directory")
             self.ftpManage.cwd("../")
 
+
         self.clientsIP = {}
         self.clients = {}
         self.dataQueue = {}
@@ -57,7 +58,7 @@ class serverHandle(object):
                         peer = s.getpeername()
                     except Exception:
                         try:
-                            self.closingClient(s,"Crashed or disconnected",peer)
+                            self.closingClient(s,"Crashed or disconnected",connection)
                         except Exception:
                             self.closingClient(s,"Crashed")
                     try:
@@ -66,25 +67,25 @@ class serverHandle(object):
                         continue
                     if data:
                         #if not logged on, try to login
-                        if peer not in self.clients or self.areUsersLoggedIn[self.clients[peer] + ".txt"] is False:
-                            b, user = self.checkIfLoggedIn(data, peer)
+                        if connection not in self.clients or self.areUsersLoggedIn[self.clients[connection] + ".txt"] is False:
+                            b, user = self.checkIfLoggedIn(data, connection)
                         else:
                             b = False
                             user = ""
                         if(b and not user == "Login"):
                             username = user.split(".")
-                            self.clients[s.getpeername()] = username[0]
+                            self.clients[connection] = username[0]
                             self.clientsIP[username[0]] = connection
                             #sending ftp login info
                             print("Logged in")
-                            print("   %s: %s" % (self.clients[peer], self.convertToString(data)))
+                            print("   %s: %s" % (self.clients[connection], self.convertToString(data)))
                             s.send(self.convertToBytes("Valid"))
                             time.sleep(.5)
                             s.send(self.convertToBytes("FTP:MDC@adpscommunity.com:ADPSadmin"))
                             if s not in self.outputs:
                                 self.outputs.append(s)
                         #if already logged on, handle data
-                        elif peer in self.clients and self.areUsersLoggedIn[self.clients[peer] + ".txt"] is True:
+                        elif connection in self.clients and self.areUsersLoggedIn[self.clients[connection] + ".txt"] is True:
                             message = self.convertToString(data)
                             #sendto:badge:message
                             if "sendto" in message.lower():
@@ -108,21 +109,21 @@ class serverHandle(object):
                                 #print("   %s> %s" % ("sending to>"+self.clients[peer], sending))
                                 s.send(self.convertToBytes(sending))
 
-                            print("   %s: %s" % (self.clients[peer], message))
+                            print("   %s: %s" % (self.clients[connection], message))
                             if s not in self.outputs:
                                 self.outputs.append(s)
                         else:
                             try:
-                                if self.areUsersLoggedIn[self.clients[peer] + ".txt"] is True:
+                                if self.areUsersLoggedIn[self.clients[connection] + ".txt"] is True:
                                     print("Client already logged in else where")
-                                    self.closingClient(s, "logged in else where", peer)
+                                    self.closingClient(s, "logged in else where", connection)
                             except:
                                 continue
                             else:
                                 print("Cannot allow client")
-                                self.closingClient(s,"Client not allowed",peer)
+                                self.closingClient(s,"Client not allowed",connection)
                     else:
-                        self.closingClient(s,"Disconnect",peer)
+                        self.closingClient(s,"Disconnect",connection)
 
             for s in writable:
                 try:
@@ -131,7 +132,7 @@ class serverHandle(object):
                     #print("   Output queue Is empty for: ",s.getpeername())
                     self.outputs.remove(s)
                 else:
-                    print("   Sending: >%s< to %s" % (self.convertToString(nextMsg),self.clients[s.getpeername()]))
+                    print("   Sending: >%s< to %s" % (self.convertToString(nextMsg),self.clients[connection]))
                     s.send(nextMsg)
 
             for s in e:
@@ -142,19 +143,19 @@ class serverHandle(object):
                 s.close()
                 del self.dataQueue[s]
 
-    def clearCustomDicts(self,peer):
+    def clearCustomDicts(self,con):
         print("Deleting user")
-        print(peer);
-        print(self.clients[peer])
-        self.areUsersLoggedIn[self.clients[peer] + ".txt"] = False
+        print(con)
+        print(self.clients[con])
+        self.areUsersLoggedIn[self.clients[con] + ".txt"] = False
         print(self.areUsersLoggedIn)
-        del self.clientsIP[self.clients[peer]]
-        del self.clients[peer]
-    def closingClient(self,s,message,peer=None):
-        if peer != None and peer in self.clients:
+        del self.clientsIP[self.clients[con]]
+        del self.clients[con]
+    def closingClient(self,s,message,con=None):
+        if con != None and con in self.clients:
             try:
-                print("Closing "+self.clients[peer]+" for: "+message)
-                self.clearCustomDicts(peer)
+                print("Closing "+self.clients[con]+" for: "+message)
+                self.clearCustomDicts(con)
             except Exception:
                 print("Closing Client for: " + message)
         else:
