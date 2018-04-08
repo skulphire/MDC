@@ -57,7 +57,7 @@ class serverHandle(object):
                         peer = s.getpeername()
                     except Exception:
                         try:
-                            self.closingClient(s,"Crashed or disconnected")
+                            self.closingClient(s,"Crashed or disconnected",peer)
                         except Exception:
                             self.closingClient(s,"Crashed")
                     try:
