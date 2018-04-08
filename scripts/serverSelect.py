@@ -147,6 +147,7 @@ class serverHandle(object):
         print("Deleting user")
         print(con)
         print(self.clients[con])
+        #not working correct
         self.areUsersLoggedIn[self.clients[con] + ".txt"] = False
         print(self.areUsersLoggedIn)
         del self.clientsIP[self.clients[con]]
