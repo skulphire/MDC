@@ -57,7 +57,7 @@ class serverHandle(object):
                         peer = s.getpeername()
                     except Exception:
                         try:
-                            self.closingClient(s,"Crashed or disconnected",peer)
+                            self.closingClient(s,"Crashed or disconnected")
                         except Exception:
                             self.closingClient(s,"Crashed")
                     try:
@@ -144,6 +144,7 @@ class serverHandle(object):
 
     def clearCustomDicts(self,peer):
         print("Deleting user")
+        print(peer);
         print(self.clients[peer])
         self.areUsersLoggedIn[self.clients[peer] + ".txt"] = False
         print(self.areUsersLoggedIn)
