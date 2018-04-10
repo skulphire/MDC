@@ -154,6 +154,7 @@ class serverHandle(object):
         del self.clientsIP[self.clients[con]]
         del self.clients[con]
     def closingClient(self,s,message,con=None):
+        print(con)
         if con != None and con in self.clients:
             try:
                 print("Closing "+self.clients[con]+" for: "+message)
