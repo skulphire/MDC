@@ -55,13 +55,13 @@ class serverHandle(object):
                     self.dataQueue[connection] = queue.Queue()
                     print(self.clients)
                 else:
-                    try:
-                        peer = s.getpeername()
-                    except Exception:
-                        try:
-                            self.closingClient(s,"Crashed or disconnected",client)
-                        except Exception:
-                            self.closingClient(s,"Crashed")
+                    # try:
+                    #     peer = s.getpeername()
+                    # except Exception:
+                    #     try:
+                    #         self.closingClient(s,"Crashed or disconnected",client)
+                    #     except Exception:
+                    #         self.closingClient(s,"Crashed")
                     try:
                         data = s.recv(1024)
                     except Exception:
