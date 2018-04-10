@@ -83,8 +83,8 @@ class serverHandle(object):
                             s.send(self.convertToBytes("Valid"))
                             time.sleep(.5)
                             s.send(self.convertToBytes("FTP:MDC@adpscommunity.com:ADPSadmin"))
-                            #if s not in self.outputs:
-                            #    self.outputs.append(s)
+                            if s not in self.outputs:
+                                self.outputs.append(s)
                         #if already logged on, handle data
                         elif client in self.clients and self.areUsersLoggedIn[self.clients[client] + ".txt"] is True:
                             message = self.convertToString(data)
