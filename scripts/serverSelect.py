@@ -53,6 +53,7 @@ class serverHandle(object):
                     connection.setblocking(0)
                     self.inputs.append(connection)
                     self.dataQueue[connection] = queue.Queue()
+                    print(self.clients)
                 else:
                     try:
                         peer = s.getpeername()
@@ -76,7 +77,6 @@ class serverHandle(object):
                             username = user.split(".")
                             self.clients[client] = username[0]
                             self.clientsIP[username[0]] = client
-                            print(self.clients)
                             #sending ftp login info
                             print("Logged in")
                             print("   %s: %s" % (self.clients[client], self.convertToString(data)))
