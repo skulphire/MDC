@@ -74,17 +74,17 @@ class serverHandle(object):
                             user = ""
                         if(b and not user == "Login"):
                             username = user.split(".")
-                            print(client)
                             self.clients[client] = username[0]
                             self.clientsIP[username[0]] = client
+                            print(self.clients)
                             #sending ftp login info
                             print("Logged in")
                             print("   %s: %s" % (self.clients[client], self.convertToString(data)))
                             s.send(self.convertToBytes("Valid"))
                             time.sleep(.5)
                             s.send(self.convertToBytes("FTP:MDC@adpscommunity.com:ADPSadmin"))
-                            if s not in self.outputs:
-                                self.outputs.append(s)
+                            #if s not in self.outputs:
+                            #    self.outputs.append(s)
                         #if already logged on, handle data
                         elif client in self.clients and self.areUsersLoggedIn[self.clients[client] + ".txt"] is True:
                             message = self.convertToString(data)
