@@ -74,6 +74,7 @@ class serverHandle(object):
                             user = ""
                         if(b and not user == "Login"):
                             username = user.split(".")
+                            print(client)
                             self.clients[client] = username[0]
                             self.clientsIP[username[0]] = client
                             #sending ftp login info
