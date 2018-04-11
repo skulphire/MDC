@@ -55,13 +55,6 @@ class serverHandle(object):
                     self.dataQueue[connection] = queue.Queue()
                     print(self.clients)
                 else:
-                    # try:
-                    #     peer = s.getpeername()
-                    # except Exception:
-                    #     try:
-                    #         self.closingClient(s,"Crashed or disconnected",client)
-                    #     except Exception:
-                    #         self.closingClient(s,"Crashed")
                     try:
                         data = s.recv(1024)
                     except Exception:
@@ -97,8 +90,10 @@ class serverHandle(object):
                                     reciever = self.clientsIP[sending[1]]
                                     reciever.send(self.convertToBytes(sending[2]))
                                     s.send(self.convertToBytes("Valid"))
+                                    print("valid")
                                 else:
                                     s.send(self.convertToBytes("Invalid"))
+                                    print("invalid")
                             #get user list
                             elif "userlist" in message.lower():
                                 sending = "userlist"
