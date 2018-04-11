@@ -68,25 +68,25 @@ class serverHandle(object):
                         continue
                     if data:
                         #if not logged on, try to login
-                        if client not in self.clients or self.areUsersLoggedIn[self.clients[client] + ".txt"] is False:
-                            b, user = self.checkIfLoggedIn(data, client)
+                        if s not in self.clients or self.areUsersLoggedIn[self.clients[s] + ".txt"] is False:
+                            b, user = self.checkIfLoggedIn(data, s)
                         else:
                             b = False
                             user = ""
                         if(b and not user == "Login"):
                             username = user.split(".")
-                            self.clients[client] = username[0]
-                            self.clientsIP[username[0]] = client
+                            self.clients[s] = username[0]
+                            self.clientsIP[username[0]] = s
                             #sending ftp login info
                             print("Logged in")
-                            print("   %s: %s" % (self.clients[client], self.convertToString(data)))
+                            print("   %s: %s" % (self.clients[s], self.convertToString(data)))
                             s.send(self.convertToBytes("Valid"))
                             time.sleep(.5)
                             s.send(self.convertToBytes("FTP:MDC@adpscommunity.com:ADPSadmin"))
                             if s not in self.outputs:
                                 self.outputs.append(s)
                         #if already logged on, handle data
-                        elif client in self.clients and self.areUsersLoggedIn[self.clients[client] + ".txt"] is True:
+                        elif s in self.clients and self.areUsersLoggedIn[self.clients[s] + ".txt"] is True:
                             message = self.convertToString(data)
                             #sendto:badge:message
                             if "sendto" in message.lower():
@@ -110,21 +110,21 @@ class serverHandle(object):
                                 #print("   %s> %s" % ("sending to>"+self.clients[peer], sending))
                                 s.send(self.convertToBytes(sending))
 
-                            print("   %s: %s" % (self.clients[client], message))
+                            print("   %s: %s" % (self.clients[s], message))
                             if s not in self.outputs:
                                 self.outputs.append(s)
                         else:
                             try:
-                                if self.areUsersLoggedIn[self.clients[client] + ".txt"] is True:
+                                if self.areUsersLoggedIn[self.clients[s] + ".txt"] is True:
                                     print("Client already logged in else where")
-                                    self.closingClient(s, "logged in else where", client)
+                                    self.closingClient(s, "logged in else where", s)
                             except:
                                 continue
                             else:
                                 print("Cannot allow client")
-                                self.closingClient(s,"Client not allowed",client)
+                                self.closingClient(s,"Client not allowed",s)
                     else:
-                        self.closingClient(s,"Disconnect",client)
+                        self.closingClient(s,"Disconnect",s)
 
             for s in writable:
                 try:
