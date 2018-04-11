@@ -146,8 +146,8 @@ class serverHandle(object):
 
     def clearCustomDicts(self,con):
         print("Deleting user")
-        print(con)
-        print(self.clients)
+        #print(con)
+        #print(self.clients)
         #not working correct
         self.areUsersLoggedIn[self.clients[con] + ".txt"] = False
         print(self.areUsersLoggedIn)
