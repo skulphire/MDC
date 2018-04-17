@@ -104,6 +104,8 @@ class serverHandle(object):
                                         sending = sending+":"+user
                                 #print("   %s> %s" % ("sending to>"+self.clients[peer], sending))
                                 s.send(self.convertToBytes(sending))
+                            elif "desktop" in message.lower():
+                                self.clients[s]+="(Desktop)"
 
                             print("   %s: %s" % (self.clients[s], message))
                             if s not in self.outputs:
