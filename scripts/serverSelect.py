@@ -108,7 +108,7 @@ class serverHandle(object):
                                 s.send(self.convertToBytes(sending))
                             elif "desktop" in message.lower():
                                 self.clientText[s]+="(Desktop)"
-                            elif "game" in message.lower():
+                            elif "gta" in message.lower():
                                 self.clientText[s]+="(Game)"
 
                             print("   %s: %s" % (self.clientText[s], message))
