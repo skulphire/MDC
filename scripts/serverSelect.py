@@ -27,6 +27,7 @@ class serverHandle(object):
 
         self.clientsIP = {}
         self.clients = {}
+        self.clientText = {}
         self.dataQueue = {}
         self.outputs = []
         self.server = socket(AF_INET, SOCK_STREAM)
@@ -69,6 +70,7 @@ class serverHandle(object):
                         if(b and not user == "Login"):
                             username = user.split(".")
                             self.clients[s] = username[0]
+                            self.clientText[s] = username[0]
                             self.clientsIP[username[0]] = s
                             #sending ftp login info
                             print("Logged in")
@@ -105,9 +107,11 @@ class serverHandle(object):
                                 #print("   %s> %s" % ("sending to>"+self.clients[peer], sending))
                                 s.send(self.convertToBytes(sending))
                             elif "desktop" in message.lower():
-                                self.clients[s]+="(Desktop)"
+                                self.clientText[s]+="(Desktop)"
+                            elif "game" in message.lower():
+                                self.clientText[s]+="(Game)"
 
-                            print("   %s: %s" % (self.clients[s], message))
+                            print("   %s: %s" % (self.clientText[s], message))
                             if s not in self.outputs:
                                 self.outputs.append(s)
                         else:
@@ -130,7 +134,7 @@ class serverHandle(object):
                     #print("   Output queue Is empty for: ",s.getpeername())
                     self.outputs.remove(s)
                 else:
-                    print("   Sending: >%s< to %s" % (self.convertToString(nextMsg),self.clients[client]))
+                    print("   Sending: >%s< to %s" % (self.convertToString(nextMsg),self.clients[s]))
                     s.send(nextMsg)
 
             for s in e:
