@@ -110,6 +110,13 @@ class serverHandle(object):
                                 self.clientText[s]+="(Desktop)"
                             elif "gta" in message.lower():
                                 self.clientText[s]+="(Game)"
+                            elif "loggedinusers" in message.lower():
+                                sending = "usersonline"
+                                for user in self.areUsersLoggedIn:
+                                    if(self.areUsersLoggedIn[user]):
+                                        badge = user.split(".")
+                                        sending = sending+":"+badge[0]
+                                s.send(self.convertToBytes(sending))
 
                             print("   %s: %s" % (self.clientText[s], message))
                             if s not in self.outputs:
