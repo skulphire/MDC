@@ -165,7 +165,7 @@ class serverHandle(object):
         print(con)
         if con != None and con in self.clients:
             try:
-                print("Closing "+self.clients[con]+" for: "+message)
+                print("Closing "+self.clientText[con]+" for: "+message)
                 self.clearCustomDicts(con)
             except Exception:
                 print("Closing Client for: " + message)
