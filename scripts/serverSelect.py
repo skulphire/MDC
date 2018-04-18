@@ -55,7 +55,7 @@ class serverHandle(object):
                     connection.setblocking(0)
                     self.inputs.append(connection)
                     self.dataQueue[connection] = queue.Queue()
-                    print(self.clients)
+                    #print(self.clients)
                 else:
                     try:
                         data = s.recv(1024)
