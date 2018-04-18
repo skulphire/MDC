@@ -27,6 +27,7 @@ class serverHandle(object):
 
         self.clientsIP = {}
         self.clients = {}
+        self.desktopClient = {}
         self.clientText = {}
         self.dataQueue = {}
         self.outputs = []
@@ -72,6 +73,7 @@ class serverHandle(object):
                             self.clients[s] = username[0]
                             self.clientText[s] = username[0]
                             self.clientsIP[username[0]] = s
+                            self.desktopClient[username[0]] = False
                             #sending ftp login info
                             print("Logged in")
                             print("   %s: %s" % (self.clients[s], self.convertToString(data)))
@@ -107,13 +109,15 @@ class serverHandle(object):
                                 #print("   %s> %s" % ("sending to>"+self.clients[peer], sending))
                                 s.send(self.convertToBytes(sending))
                             elif "desktop" in message.lower():
+                                self.desktopClient[self.clientText[s]] = True
                                 self.clientText[s]+="(Desktop)"
                             elif "gta" in message.lower():
                                 self.clientText[s]+="(Game)"
                             elif "loggedinusers" in message.lower():
                                 sending = "usersonline"
-                                for user in self.areUsersLoggedIn:
-                                    if(self.areUsersLoggedIn[user]):
+                                for user in self.desktopClient:
+                                    #if client is logged in and in game
+                                    if(self.areUsersLoggedIn[user+".txt"] and not self.desktopClient[user]):
                                         badge = user.split(".")
                                         sending = sending+":"+badge[0]
                                 s.send(self.convertToBytes(sending))
