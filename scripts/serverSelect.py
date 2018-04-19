@@ -121,7 +121,7 @@ class serverHandle(object):
                                         badge = user.split(".")
                                         sending = sending+":"+badge[0]
                                 s.send(self.convertToBytes(sending))
-                            if "loggedinusers" not in message.lower():
+                            if "loggedinusers" and "blip" not in message.lower():
                                 print("   %s: %s" % (self.clientText[s], message))
                             if s not in self.outputs:
                                 self.outputs.append(s)
