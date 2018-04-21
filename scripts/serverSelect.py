@@ -122,9 +122,9 @@ class serverHandle(object):
                                         sending = sending+":"+badge[0]
                                 s.send(self.convertToBytes(sending))
 
-                            if ("loggedinusers" not in message.lower()):
+                            if ('loggedinusers' not in message.lower()):
                                 print("   %s: %s" % (self.clientText[s], message))
-                            elif ("blip" not in message.lower()):
+                            elif ('blip' not in message.lower()):
                                 print("   %s: %s" % (self.clientText[s], message))
                             if s not in self.outputs:
                                 self.outputs.append(s)
